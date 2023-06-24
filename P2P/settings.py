@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+        'daphne',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
     'rest_framework',
@@ -52,7 +53,7 @@ INSTALLED_APPS = [
     'payment',
     'order.apps.OrderConfig',
     'contact',
-    'daphne',
+
     'channels',
 
 ]
@@ -255,7 +256,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 import dj_database_url as djurl
 DATABASES={
-    'default':djurl.parse('postgres://peash:YJj9TXmTIciWyk5gxA48GFESbX88GjMs@dpg-ci4crfunqql46qqvp2eg-a.singapore-postgres.render.com/p2pdb')
+    'default':djurl.parse('postgres://p2pdata_user:T2jg9byCsfzT6VKKVcVYRRAlqckk4nWk@dpg-cibjtp59aq03rjg76lr0-a.oregon-postgres.render.com/p2pdata')
 }
 
 
