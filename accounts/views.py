@@ -11,7 +11,8 @@ from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from .utils import Util
 from .models import AccessToken
-
+import django
+django.setup()
 
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
