@@ -29,7 +29,8 @@ SECRET_KEY = 'django-insecure-%7n2c*#4h(5y*j6q+u@%2=t)ezwz57&asfu9mc=$us&d=mm8nk
 DEBUG =True
 
 ALLOWED_HOSTS = ['*']
-
+import django
+django.setup()
 
 # Application definition
 
