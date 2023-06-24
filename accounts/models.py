@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager,AbstractBaseUser 
 
+from django.contrib.contenttypes.models import ContentType
 
+ContentType._meta.app_label = 'contenttypes'
 
 
     

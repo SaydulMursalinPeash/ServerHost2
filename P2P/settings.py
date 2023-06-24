@@ -29,8 +29,7 @@ SECRET_KEY = 'django-insecure-%7n2c*#4h(5y*j6q+u@%2=t)ezwz57&asfu9mc=$us&d=mm8nk
 DEBUG =True
 
 ALLOWED_HOSTS = ['*']
-import django
-django.setup()
+
 
 # Application definition
 
@@ -257,3 +256,5 @@ import dj_database_url as djurl
 DATABASES={
     'default':djurl.parse('postgres://peash:YJj9TXmTIciWyk5gxA48GFESbX88GjMs@dpg-ci4crfunqql46qqvp2eg-a.singapore-postgres.render.com/p2pdb')
 }
+
+
