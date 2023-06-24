@@ -40,15 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-        'daphne',
+    'daphne',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig',
+    
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'corsheaders',
     
     'chat.apps.ChatConfig',
+    'accounts.apps.AccountsConfig',
     'currency',
     'payment',
     'order.apps.OrderConfig',
