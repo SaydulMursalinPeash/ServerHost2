@@ -6,4 +6,4 @@ class AccountsConfig(AppConfig):
     name = 'accounts'
     def ready(self) -> None:
         from .models import User
-        import accounts.signals
+        
