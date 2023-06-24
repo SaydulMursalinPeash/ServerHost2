@@ -13,8 +13,7 @@ from P2P.settings import CHANNEL_LAYERS
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'P2P.settings')
-import django
-django.setup()
+
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),
     "websocket": AuthMiddlewareStack(
