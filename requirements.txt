@@ -1,4 +1,4 @@
-celery
+celery==4.3.0
 channels
 daphne
 Django
@@ -17,7 +17,7 @@ mysqlclient
 asgiref
 pytz
 sqlparse
-gunicorn
+gunicorn==20.1.0
 dj-database-url
 django-environ
 uvicorn
