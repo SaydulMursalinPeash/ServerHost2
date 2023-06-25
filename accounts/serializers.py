@@ -72,7 +72,7 @@ class SendPasswordResetEmailSerializer(serializers.Serializer):
             print('Encoded UID',uid)
             token=PasswordResetTokenGenerator().make_token(user)
             print('Password reset Token: ',token)
-            link='http://localhost:3000/api/user/reset-password/'+uid+'/'+token+'/'
+            link='https://ptopuser.vercel.app/api/user/reset-password/'+uid+'/'+token+'/'
             print('Password reset link: ',link)
             data={
                 'subject':'Reset password.',

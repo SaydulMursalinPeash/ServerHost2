@@ -248,7 +248,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3001",
     "http://127.0.0.1:9000",
     'http://127.0.0.1:5500',
-    'http://ptopserver.onrender.com'
+    'http://ptopserver.onrender.com',
+    'https://ptopuser.vercel.app/'
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
