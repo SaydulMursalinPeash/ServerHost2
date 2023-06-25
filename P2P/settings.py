@@ -34,7 +34,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    
+    'accounts.apps.AccountsConfig',
+    'chat.apps.ChatConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,8 +49,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     
-    'chat.apps.ChatConfig',
-    'accounts.apps.AccountsConfig',
+    
     'currency',
     'payment',
     'order.apps.OrderConfig',
