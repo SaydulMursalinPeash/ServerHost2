@@ -1,4 +1,5 @@
-
+import django
+django.setup()
 from accounts.models import User
 from .models import Message,ChatRoom
 from channels.generic.websocket import AsyncWebsocketConsumer
@@ -10,8 +11,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from accounts.models import AccessToken
 from payment.models import *
 from django.core.exceptions import ObjectDoesNotExist
-import django
-django.setup()
+
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     def save_message_sync(user, message, chat_room):
