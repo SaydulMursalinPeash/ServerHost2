@@ -17,7 +17,7 @@ wsgi_app=get_wsgi_application()
 asgi_app=get_asgi_application()
 
 application = ProtocolTypeRouter({
-    'http': wsgi_app,
+    'http': get_wsgi_application(),
     "websocket": AuthMiddlewareStack(
         URLRouter(websocket_urlpatterns)
     ),
