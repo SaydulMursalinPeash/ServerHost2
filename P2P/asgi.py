@@ -8,18 +8,20 @@ from contact import *
 from currency import *
 from payment import *
 from chat.routings import websocket_urlpatterns
+import django
+from channels.routing import get_default_application
 
 from P2P.settings import CHANNEL_LAYERS
-
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'P2P.settings')
-
+django.setup()
+application = get_default_application()
+'''
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),
     "websocket": AuthMiddlewareStack(
         URLRouter(websocket_urlpatterns)
     ),
-})
+})'''
 
 # Use pre-defined channel layer
 channel_layer = CHANNEL_LAYERS['redis']
