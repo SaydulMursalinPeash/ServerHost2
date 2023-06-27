@@ -21,3 +21,4 @@ gunicorn==20.1.0
 dj-database-url
 django-environ
 uvicorn
+Twisted
