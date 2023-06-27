@@ -56,6 +56,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if not self.user.is_staff and (self.room_user.name!=self.user.name):
             #print(self.room_user.name)
             #print(self.user.name)
+            print('-------------------------------')
             await self.close()
 
         name = self.room_name
@@ -128,6 +129,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
     def save_message_sync(user, message, chat_room):
         Message.objects.create(message=message,user=user, chat_room=chat_room)
     async def connect(self):
+        print('entered------------------------------------')
         #self.user = self.scope["user"]
         self.method_name=self.scope['url_route']['kwargs']['method_name']
         self.room_name = self.scope['url_route']['kwargs']['user_name']+'_'+self.method_name
@@ -157,7 +159,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             #self.user=self.token_object.user
         except Token.DoesNotExist as e:
             # Close the connection if the token is invalid
-            #print('Peash')
+            print('Peash')
             await self.close()
 
         self.room_object=None
