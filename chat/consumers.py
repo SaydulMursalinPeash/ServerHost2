@@ -185,6 +185,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             await self.close()
 
         if(self.link_user==None):
+            print('-------------------Closed-----------------')
             await self.close()
         # Check if user is the designated user or an admin
         if not self.user.is_staff and (self.room_user.name!=self.user.name) and not self.user.is_officer and not self.user==self.link_user:
