@@ -36,7 +36,7 @@ class LatestUserOrder(APIView):
 
 class EditOrderView(APIView):
     permission_classes=[IsAuthenticated]
-    def post(self,request,order_id):
+    def post(self,request,order_id,format=None):
         order=Order.objects.get(id=order_id)
         if not request.user.is_officer and not request.user.is_admin:
             return Response({'error':'You are not permitted to do this action.'},status=status.HTTP_400_BAD_REQUEST)
