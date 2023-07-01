@@ -19,8 +19,9 @@ class Util:
         method_object=Method.objects.get(name=method)
         controller_objects=ChatRoomController.objects.filter(method=method_object)
         officers=[]
-        for i in (len(controller_objects)):
-            officers.append(controller_objects[i].controller)
+        print('-----------------------------saua')
+        for i in controller_objects:
+            officers.append(i.controller)
             
         admins=User.objects.filter(is_admin=True)
         list4=[]

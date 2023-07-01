@@ -250,9 +250,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:9000",
     'http://127.0.0.1:5500',
     'http://ptopserver.onrender.com',
-    'https://ptopuser.vercel.app/',
-    'https://ptopadmin.vercel.app/',
-    'https://p2p-server-l9qu.onrender.com/api/order/create-order/'
+    #'https://ptopuser.vercel.app/',
+    #'https://ptopadmin.vercel.app/',
+    #'https://p2p-server-l9qu.onrender.com/api/order/create-order/'
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
