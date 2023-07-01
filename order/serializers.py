@@ -21,8 +21,8 @@ class OrderSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         customer = validated_data.pop('customer')
         #user=User.object.get(name=customer)
-        coin = validated_data.pop('payment')
-        ad=validated_data.pop()
+        coin = validated_data.pop('coin')
+        
         mymodel_instance = Order.objects.create(**validated_data)
         mymodel_instance.customer= customer
         mymodel_instance.method = coin
