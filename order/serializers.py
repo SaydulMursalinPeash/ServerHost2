@@ -9,9 +9,6 @@ from currency.models import *
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    
-    
-
 
     class Meta:
         model = Order

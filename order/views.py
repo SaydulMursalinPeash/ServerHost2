@@ -8,7 +8,7 @@ from payment.models import Method
 
 class Order(APIView):
     permission_classes=[IsAuthenticated]
-    def post(self, request):
+    def post(self, request,format=None):
         serializer = OrderSerializer(data=request.data)
         if serializer.is_valid():
             #serializer.save()
