@@ -14,20 +14,20 @@ class Util:
 
         )
         email.send()
-
-        def get_sub_emails(method):
-            method_object=Method.objects.get(name=method)
-            controller_objects=ChatRoomController.objects.filter(method=method_object)
-            officers=[]
-            for i in (len(controller_objects)):
-                officers.append(controller_objects[i].controller)
+    @staticmethod
+    def get_sub_emails(method):
+        method_object=Method.objects.get(name=method)
+        controller_objects=ChatRoomController.objects.filter(method=method_object)
+        officers=[]
+        for i in (len(controller_objects)):
+            officers.append(controller_objects[i].controller)
             
-            admins=User.objects.filter(is_admin=True)
-            list4=[]
+        admins=User.objects.filter(is_admin=True)
+        list4=[]
 
-            for i in range(len(officers)):
-                list4.append(officers[i].email)
-            for i in range(len(admins)):
-                list4.append(admins[i].email)
+        for i in range(len(officers)):
+            list4.append(officers[i].email)
+        for i in range(len(admins)):
+            list4.append(admins[i].email)
             
-            return list4
+        return list4

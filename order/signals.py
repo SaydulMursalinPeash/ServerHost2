@@ -13,7 +13,7 @@ def notify_admins(sender, instance, created, **kwargs):
         order_coin=order.coin.name
         order_amount=order.amount
         order_email=order.order_email
-        emails=util.get_sub_emails(order_coin)
+        emails=Util.get_sub_emails(order_coin)
         data={
 
             'subject':'Order Update',
@@ -27,5 +27,5 @@ def notify_admins(sender, instance, created, **kwargs):
                 """,
                 'to_email':emails
             }
-        util.send_email(data)
+        Util.send_email(data)
 
