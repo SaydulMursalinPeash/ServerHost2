@@ -9,8 +9,7 @@ from currency.models import *
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    customer= serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    coin = serializers.PrimaryKeyRelatedField(queryset=Method.objects.all())
+    
     
 
 
@@ -19,9 +18,10 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = ['customer','account_details', 'coin', 'amount','order_email', 'method','state']
 
     def create(self, validated_data):
-        customer = validated_data.pop('customer')
-        #user=User.object.get(name=customer)
-        coin = validated_data.pop('coin')
+        customer1 = validated_data.pop('customer')
+        customer=User.object.get(id=customer1)
+        c = validated_data.pop('coin')
+        coin=Method.objects.get(id=c)
         
         mymodel_instance = Order.objects.create(**validated_data)
         mymodel_instance.customer= customer
