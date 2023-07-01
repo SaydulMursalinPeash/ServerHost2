@@ -18,8 +18,8 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = ['customer','account_details', 'coin', 'amount','order_email', 'method','state']
 
     def create(self, validated_data):
-        customer1 = validated_data.pop('customer')
-        customer=User.objects.get(id=customer1)
+        customer = validated_data.pop('customer')
+        #customer=User.objects.get(id=customer1)
         c = validated_data.pop('coin')
         coin=Method.objects.get(id=c)
         
