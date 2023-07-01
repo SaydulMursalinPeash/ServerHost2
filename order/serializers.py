@@ -19,6 +19,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         customer = validated_data.pop('customer')
+        print(customer)
         #customer=User.objects.get(id=customer1)
         coin = validated_data.pop('coin')
         #coin=Method.objects.get(id=c)
