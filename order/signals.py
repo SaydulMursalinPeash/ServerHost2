@@ -6,13 +6,14 @@ from .models import Order
 
 @receiver(post_save, sender=Order)
 def notify_admins(sender, instance, created, **kwargs):
+    util=Util()
     if created:
         order=instance
         order_user=order.customer.name
         order_coin=order.coin.name
         order_amount=order.amount
         order_email=order.order_email
-        emails=Util.get_sub_emails(order_coin)
+        emails=util.get_sub_emails(order_coin)
         data={
 
             'subject':'Order Update',
@@ -26,5 +27,5 @@ def notify_admins(sender, instance, created, **kwargs):
                 """,
                 'to_email':emails
             }
-        Util.send_email(data)
+        util.send_email(data)
 
