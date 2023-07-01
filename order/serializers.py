@@ -18,11 +18,13 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ['customer','account_details', 'coin', 'amount','order_email', 'method','state']
 
-    def create(self, validated_data):
-        customer = validated_data.pop('customer')
-        coin = validated_data.pop('payment')
-        mymodel_instance = Order.objects.create(**validated_data)
-        mymodel_instance.customer= customer
-        mymodel_instance.method = coin
-        mymodel_instance.save()
-        return mymodel_instance
+    def validate(self,attrs):
+        customer=User.objects.get(name=attrs.get('customer'))
+        ad=attrs.get('account_details')
+        co=Method.objects.get(id=attrs.get('coin'))
+        am=float(attrs.get('amount'))
+        oe=attrs.get('order_email')
+        me=attrs.get('method')
+        st=attrs.get('state')
+        order=Order.objects.create(customer=customer,account_details=ad,coin=co,amount=am,order_email=oe,method=me,state=st)
+        return order
