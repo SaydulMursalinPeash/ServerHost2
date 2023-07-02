@@ -240,7 +240,8 @@ SIMPLE_JWT = {
 }
 
 PASSWORD_RESET_TIMEOUT=900
-
+CORS_ALLOW_ALL_ORIGINS = True
+'''
 CORS_ALLOWED_ORIGINS = [
     "https://example.com",
     "https://sub.example.com",
@@ -254,6 +255,9 @@ CORS_ALLOWED_ORIGINS = [
     #'https://ptopadmin.vercel.app/',
     #'https://p2p-server-l9qu.onrender.com/api/order/create-order/'
 ]
+
+'''
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

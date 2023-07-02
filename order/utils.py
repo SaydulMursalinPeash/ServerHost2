@@ -19,7 +19,7 @@ class Util:
         method_object=Method.objects.get(name=method)
         controller_objects=ChatRoomController.objects.filter(method=method_object)
         officers=[]
-        print('-----------------------------saua')
+        #print('-----------------------------saua')
         for i in controller_objects:
             officers.append(i.controller)
             
