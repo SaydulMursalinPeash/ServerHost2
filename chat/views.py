@@ -20,8 +20,6 @@ class RoomMessage(APIView):
         try:
             room = ChatRoom.objects.get(name=room_name)
             messages = room.chat_room_for_message.all()
-            print(messages)
-
             serializer=MessageSerializer(messages,many=True)
             return Response(serializer.data,status=status.HTTP_200_OK)
         except ObjectDoesNotExist as e:
