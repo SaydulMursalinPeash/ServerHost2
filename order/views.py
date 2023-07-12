@@ -6,7 +6,37 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from payment.models import Method
 from accounts.renderers import *
+from rest_framework.permissions import AllowAny
+from django.core.exceptions import ObjectDoesNotExist
+from accounts.models import AccessToken
+class Order(APIView):
+    permission_classes=[AllowAny]
+    renderer_classes=[UserRenderer]
+    def post(self, request,format=None):
+        access_token = request.GET.get('access_token')
+        token_user=None
+        if access_token is None:
+            return Response({'error':'Access token is required.'},status=status.HTTP_400_BAD_REQUEST)
+        token_obj=None
+        try:
+            token_obj=AccessToken.objects.get(token=access_token)
+        except ObjectDoesNotExist as e:
+            return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
+        if token_obj is None:
+            return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
+        
+        token_user=token_obj.user
+        if token_user.id is not request.data.get('customer') and not token_user.is_admin:
+            return Response({'error':'You are not Allowed to do this action.'},status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer = OrderSerializer(data=request.data)
+        if serializer.is_valid():
+            #serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+'''
 class Order(APIView):
     permission_classes=[IsAuthenticated]
     renderer_classes=[UserRenderer]
@@ -16,7 +46,7 @@ class Order(APIView):
             #serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+'''
 class LatestUserOrder(APIView):
     permission_classes=[IsAuthenticated]
     renderer_classes=[UserRenderer]
