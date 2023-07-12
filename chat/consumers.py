@@ -147,6 +147,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
         self.user=User()
         
         if self.token is None or '':
+            print('Invalid Token.')
             await self.close()
         
         # Verify the token and get the user
