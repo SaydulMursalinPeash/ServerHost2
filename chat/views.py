@@ -9,7 +9,39 @@ from .renderers import *
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Max
 from .renderers import *
+from rest_framework.permissions import AllowAny
+from accounts.models import AccessToken
+class RoomMessage(APIView):
+    permission_classes=[AllowAny]
+    def get(self,request,room_name,format=None):
+        access_token = request.GET.get('access_token')
+        token_user=None
+        if access_token is None:
+            return Response({'error':'Access token is required.'},status=status.HTTP_400_BAD_REQUEST)
+        token_obj=None
+        try:
+            token_obj=AccessToken.objects.get(token=access_token)
+        except ObjectDoesNotExist as e:
+            return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
+        if token_obj is None:
+            return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
+        
+        token_user=token_obj.user
 
+        
+        try:
+            room = ChatRoom.objects.get(name=room_name)
+            messages = room.chat_room_for_message.all()
+            serializer=MessageSerializer(messages,many=True)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        except ObjectDoesNotExist as e:
+            return Response({'error':'Invalid chat.'},status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+'''
 class RoomMessage(APIView):
     permission_classes=[IsAuthenticated]
     renderer_classes=[UserRenderer]
@@ -24,6 +56,8 @@ class RoomMessage(APIView):
             return Response(serializer.data,status=status.HTTP_200_OK)
         except ObjectDoesNotExist as e:
             return Response({'error':'Invalid chat.'},status=status.HTTP_400_BAD_REQUEST)
+
+'''
 
 
 def get_chat_rooms_ordered_by_last_message_time():
