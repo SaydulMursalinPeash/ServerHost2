@@ -5,9 +5,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from payment.models import Method
+from accounts.renderers import *
 
 class Order(APIView):
     permission_classes=[IsAuthenticated]
+    renderer_classes=[UserRenderer]
     def post(self, request,format=None):
         serializer = OrderSerializer(data=request.data)
         if serializer.is_valid():
@@ -17,6 +19,7 @@ class Order(APIView):
 
 class LatestUserOrder(APIView):
     permission_classes=[IsAuthenticated]
+    renderer_classes=[UserRenderer]
     def get(self,request,user_uid,coin_id,format=None):
         user= User.objects.get(id=user_uid)
         method=Method.objects.get(id=coin_id)
@@ -36,6 +39,7 @@ class LatestUserOrder(APIView):
 
 class EditOrderView(APIView):
     permission_classes=[IsAuthenticated]
+    renderer_classes=[UserRenderer]
     def post(self,request,order_id,format=None):
         order=Order.objects.get(id=order_id)
         if not request.user.is_officer and not request.user.is_admin:
@@ -47,6 +51,7 @@ class EditOrderView(APIView):
     
 class GetAllOrdersView(APIView):
     permission_classes=[IsAuthenticated]
+    renderer_classes=[UserRenderer]
     def get(self,request):
         if not request.user.is_admin and not request.user.is_officer:
             return Response({'error':'You are not permitted to do this action.'},status=status.HTTP_400_BAD_REQUEST)

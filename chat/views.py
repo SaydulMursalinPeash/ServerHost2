@@ -12,7 +12,7 @@ from .renderers import *
 
 class RoomMessage(APIView):
     permission_classes=[IsAuthenticated]
-    
+    renderer_classes=[UserRenderer]
     def get(self,request,room_name,fromat=None):
         room=ChatRoom.objects.get(name=room_name)
         if request.user.name!=room.user.name and not request.user.is_admin and not request.user.is_officer:
