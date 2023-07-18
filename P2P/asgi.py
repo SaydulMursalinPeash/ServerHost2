@@ -24,4 +24,4 @@ application = ProtocolTypeRouter({
 })
 
 # Use pre-defined channel layer
-channel_layer = CHANNEL_LAYERS['default']
+channel_layer = CHANNEL_LAYERS['redis']

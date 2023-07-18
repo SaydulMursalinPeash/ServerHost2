@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import os
-
+import redis
 #import dj_database_url as dj_data
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -70,13 +70,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     },
-    "redis": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("redis-13323.c273.us-east-1-2.ec2.cloud.redislabs.com", 13323)],
-            "password":"1PTsDM2YtN4AHBvF2RCCF28inY0IuTpf"
-        },
-    },
+    "redis": redis.from_url('redis://red-ci9v4kh8g3n2q3tt2kj0:6379')
 }
 
 
