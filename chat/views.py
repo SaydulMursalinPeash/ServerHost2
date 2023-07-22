@@ -35,7 +35,7 @@ class RoomMessage(APIView):
             serializer=MessageSerializer(messages,many=True)
             return Response(serializer.data,status=status.HTTP_200_OK)
         except ObjectDoesNotExist as e:
-            return Response({'error':'Invalid chat.'},status=status.HTTP_400_BAD_REQUEST)
+            return Response({'msg':'Chat not found.'},status=status.HTTP_200_OK)
 
 
 
