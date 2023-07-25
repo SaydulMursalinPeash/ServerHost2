@@ -34,7 +34,7 @@ class UserRegistrationView(APIView):
             token_gen2=PasswordResetTokenGenerator()
             token2=token_gen2.make_token(user)
             uid=smart_str(urlsafe_base64_encode(force_bytes(user.id)))
-            link='https://ptopuser.vercel.app/api/user/varify-email/'+uid+'/'+token2+'/'
+            link='https://ptopuser-h2u4.vercel.app/api/user/varify-email/'+uid+'/'+token2+'/'
             print('Email varify link: ',link)
             data={
                 'subject':'Email varification.',
@@ -66,7 +66,7 @@ class UserLoginView(APIView):
                 token_gen2=PasswordResetTokenGenerator()
                 token2=token_gen2.make_token(test_user)
                 uid=smart_str(urlsafe_base64_encode(force_bytes(test_user.id)))
-                link='https://ptopuser.vercel.app/api/user/varify-email/'+uid+'/'+token2+'/'
+                link='https://ptopuser-h2u4.vercel.app/api/user/varify-email/'+uid+'/'+token2+'/'
                 print('Email varify link: ',link)
                 data={
                     'subject':'Email varification.',
