@@ -51,20 +51,22 @@ class LatestUserOrder(APIView):
     permission_classes=[IsAuthenticated]
     renderer_classes=[UserRenderer]
     def get(self,request,user_uid,coin_id,format=None):
-        user= User.objects.get(id=user_uid)
-        method=Method.objects.get(id=coin_id)
+        user=None
+        try:
+            user= User.objects.get(id=user_uid)
+        except ObjectDoesNotExist as e:
+            return Response({'error':'You are not permitted to do this action. Sorry!'},status=status.HTTP_400_BAD_REQUEST)
+        method=None
+        try:
+            method=Method.objects.get(id=coin_id)
+        except ObjectDoesNotExist as e:
+            return Response({'error':'Invalid coin.'},status=status.HTTP_400_BAD_REQUEST)
+
         if not user==request.user and not request.user.is_admin and not request.user.is_officer:
             return Response({'error':'You are not permitted to do this action. Sorry!'},status=status.HTTP_400_BAD_REQUEST)
-        latest_order=None
-        try:
-            latest_order = Order.objects.filter(customer=user,coin=method).latest('created_at')
-        except Order.DoesNotExist:
-            latest_order = None
-        
-        if latest_order is not None:
-            serializer=OrderSerializer(latest_order)
-            return Response({'msg':serializer.data,},status=status.HTTP_200_OK)
-        return Response({'error':'No order found!'},status=status.HTTP_404_NOT_FOUND)
+        orders=Order.objects.filter(customer=user,coin=method)
+        ser=AllOrdersSerializers(orders,many=True)
+        return Response(ser.data,status=status.HTTP_404_NOT_FOUND)
 
 
 class EditOrderView(APIView):

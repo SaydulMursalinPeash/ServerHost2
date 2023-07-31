@@ -86,3 +86,8 @@ class SellOrderSerializer(serializers.ModelSerializer):
 
             )
             return order 
+        
+class AllOrdersSerializers(serializers.ModelSerializer):
+    class Meta:
+        model=Order
+        fields=['account_details', 'amount', 'method','state','time']
