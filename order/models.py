@@ -13,7 +13,7 @@ class Order(models.Model):
     trc20_address=models.CharField(max_length=300,null=True,blank=True,default=None)
     bep20_address=models.CharField(max_length=300,null=True,blank=True,default=None)
     method=models.CharField(max_length=200,null=True,blank=True)
-    state=models.CharField(max_length=200,null=True,)
+    state=models.BooleanField(default=False)
     time=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
