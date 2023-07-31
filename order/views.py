@@ -88,3 +88,55 @@ class GetAllOrdersView(APIView):
         orders=Order.objects.all()
         serializer=OrderSerializer(orders,many=True)
         return Response({'msg':serializer.data,},status=status.HTTP_200_OK)
+
+
+class BuyOrder(APIView):
+    permission_classes=[AllowAny]
+    def post(self,request,format=None):
+        access_token = request.GET.get('access_token')
+        token_user=None
+        if access_token is None:
+            return Response({'error':'Access token is required.'},status=status.HTTP_400_BAD_REQUEST)
+        token_obj=None
+        try:
+            token_obj=AccessToken.objects.get(token=access_token)
+        except ObjectDoesNotExist as e:
+            return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
+        if token_obj is None:
+            return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
+        
+        token_user=token_obj.user
+        if token_user.id is not request.data.get('customer') and not token_user.is_admin:
+            return Response({'error':'You are not Allowed to do this action.'},status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer = BuyOrderSerializer(data=request.data)
+        if serializer.is_valid():
+            #serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SellOrder(APIView):
+    permission_classes=[AllowAny]
+    def post(self,request,format=None):
+        access_token = request.GET.get('access_token')
+        token_user=None
+        if access_token is None:
+            return Response({'error':'Access token is required.'},status=status.HTTP_400_BAD_REQUEST)
+        token_obj=None
+        try:
+            token_obj=AccessToken.objects.get(token=access_token)
+        except ObjectDoesNotExist as e:
+            return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
+        if token_obj is None:
+            return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
+        
+        token_user=token_obj.user
+        if token_user.id is not request.data.get('customer') and not token_user.is_admin:
+            return Response({'error':'You are not Allowed to do this action.'},status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer = SellOrderSerializer(data=request.data)
+        if serializer.is_valid():
+            #serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
