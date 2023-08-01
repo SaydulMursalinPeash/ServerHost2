@@ -6,33 +6,18 @@ from .models import *
 from currency.models import *
 
 
-
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields=['id','name']
 
 class OrderSerializer(serializers.ModelSerializer):
+    customer=UserSerializer()
 
     class Meta:
         model = Order
-        fields = ['customer','account_details', 'coin', 'amount','purpose','order_email', 'method','state']
+        fields = ['customer','account_details', 'coin', 'amount', 'method','state']
 
-    def validate(self, attrs):
-        #cu=User.objects.get(id=attrs.get('customer'))
-        ad=attrs.get('account_details')
-        #co=Method.objects.get(id=attrs.get('coin'))
-        print(attrs.get('customer'))
-        am=attrs.get('amount')
-        oe=attrs.get('order_email')
-        me=attrs.get('method')
-        st=attrs.get('state')
-        order=Order.objects.create(
-            customer=attrs.get('customer'),
-            account_details=ad,
-            coin=attrs.get('coin'),
-            amount=am,
-            order_email=oe,
-            method=me,
-            state=st
-        )
-        return order
 
 class BuyOrderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -90,4 +75,4 @@ class SellOrderSerializer(serializers.ModelSerializer):
 class AllOrdersSerializers(serializers.ModelSerializer):
     class Meta:
         model=Order
-        fields=['account_details', 'amount', 'method','state','time']
+        fields=['id','account_details', 'amount', 'method','state','time']
