@@ -11,8 +11,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from accounts.models import AccessToken
 from payment.models import *
 from django.core.exceptions import ObjectDoesNotExist
-
-
+import base64 as base
+from django.core.files.base import ContentFile
 
 class ChatConsumer(AsyncWebsocketConsumer):
     def save_message_sync(user, message, chat_room):
@@ -234,11 +234,15 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             print(text_data)
             text_data_json = json.loads(text_data)
             message = text_data_json['message']
+            msg_img1 = text_data_json['image']
+            msg_img=msg_img1
+            msg_img2=base.b64decode(msg_img)
+            image_file=ContentFile(msg_img2)
             print(message)
         except (json.JSONDecodeError, KeyError):
             print('error')
             return
-        await sync_to_async(Message.objects.create)(user=self.user, message=message,chat_room=self.room_object)
+        await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object)
         # Save message to database
         #Message.objects.create(user=self.user, message=message,chat_room=self.room_object)
 
@@ -249,6 +253,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
                 'type':'chat_message',
                 'chat_room':{'name':self.room_name},
                 'message': message,
+                'image':msg_img,
                 'time':str(datetime.datetime.now()),
                 'user':{
                     'id':self.user.id,
