@@ -65,8 +65,10 @@ class LatestUserOrder(APIView):
         if not user==request.user and not request.user.is_admin and not request.user.is_officer:
             return Response({'error':'You are not permitted to do this action. Sorry!'},status=status.HTTP_400_BAD_REQUEST)
         orders=Order.objects.filter(customer=user,coin=method)
+        com=Order.objects.filter(customer=user,coin=method,state=True).count()
+        icom=orders.count()-com
         ser=AllOrdersSerializers(orders,many=True)
-        return Response(ser.data,status=status.HTTP_404_NOT_FOUND)
+        return Response({'msg':ser.data,'num_comp':com,'num_incomp':icom},status=status.HTTP_404_NOT_FOUND)
 
 
 class EditOrderView(APIView):
@@ -88,8 +90,10 @@ class GetAllOrdersView(APIView):
         if not request.user.is_admin and not request.user.is_officer:
             return Response({'error':'You are not permitted to do this action.'},status=status.HTTP_400_BAD_REQUEST)
         orders=Order.objects.all()
+        com=Order.objects.filter(state=True).count()
+        icom=orders.count()-com
         serializer=OrderSerializer(orders,many=True)
-        return Response({'msg':serializer.data,},status=status.HTTP_200_OK)
+        return Response({'msg':serializer.data,'num_comp':com,'num_incomp':icom},status=status.HTTP_200_OK)
 
 
 class BuyOrder(APIView):
