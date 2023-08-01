@@ -22,9 +22,9 @@ def send_message_notification(sender, instance, **kwargs):
     current_time = timezone.now()
     time_difference = timesince(created_at_datetime, current_time)
     message = f"New Message from - User: {instance.user.name} for Coin: {instance.method.name} - Time: {time_difference} ago."
-    pusher_client.trigger('my-channel', 'my-event', {'message': message,'method':instance.method.name})
+    pusher_client.trigger('message', 'message', {'message': message})
 
 @receiver(post_save, sender=Order)
 def send_order_notification(sender, instance, **kwargs):
     message = f"New Order: {instance.coin.name} - Amount: {instance.amount}"
-    pusher_client.trigger('my-channel', 'my-event', {'message': message})
+    pusher_client.trigger('order', 'order', {'message': message})
