@@ -26,5 +26,5 @@ def send_message_notification(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Order)
 def send_order_notification(sender, instance, **kwargs):
-    message = f"New Order: {instance.method.name} - Amount: {instance.amount}"
+    message = f"New Order: {instance.coin.name} - Amount: {instance.amount}"
     pusher_client.trigger('my-channel', 'my-event', {'message': message})
