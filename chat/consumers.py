@@ -236,13 +236,13 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             message = text_data_json['message']
             msg_img1 = text_data_json['image']
             msg_img=msg_img1
-            msg_img2=base.b64decode(msg_img)
-            image_file=ContentFile(msg_img2)
+            #msg_img2=base.b64decode(msg_img)
+            #image_file=ContentFile(msg_img2)
             print(message)
         except (json.JSONDecodeError, KeyError):
             print('error')
             return
-        await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object)
+        await sync_to_async(Message.objects.create)(user=self.user, message=message,image=msg_img,chat_room=self.room_object)
         # Save message to database
         #Message.objects.create(user=self.user, message=message,chat_room=self.room_object)
 
