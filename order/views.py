@@ -138,9 +138,7 @@ class SellOrder(APIView):
             return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
         
         token_user=token_obj.user
-        if token_user.id is not request.data.get('customer') and not token_user.is_admin:
-            print(f"id1={token_user.id}  id2= {request.data.get('customer')}")
-            return Response({'error':'You are not Allowed to do this action.'},status=status.HTTP_400_BAD_REQUEST)
+        
         
         serializer = SellOrderSerializer(data=request.data)
         if serializer.is_valid():
@@ -164,9 +162,7 @@ class OrderStateChange(APIView):
             return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
         
         token_user=token_obj.user
-        if token_user.id is not request.data.get('customer') and not token_user.is_admin:
-            print(f"id1={token_user.id}  id2= {request.data.get('customer')}")
-            return Response({'error':'You are not Allowed to do this action.'},status=status.HTTP_400_BAD_REQUEST)
+       
         try:
             order_obj=Order.objects.get(id=id)
         except ObjectDoesNotExist as e:
