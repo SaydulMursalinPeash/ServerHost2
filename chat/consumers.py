@@ -242,7 +242,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
         except (json.JSONDecodeError, KeyError):
             print('error')
             return
-        await sync_to_async(Message.objects.create)(user=self.user, message=message,image=msg_img,chat_room=self.room_object)
+        await sync_to_async(Message.objects.create)(user=self.user, message=message,image=msg_img,chat_room=self.room_object,method=self.method)
         # Save message to database
         #Message.objects.create(user=self.user, message=message,chat_room=self.room_object)
 

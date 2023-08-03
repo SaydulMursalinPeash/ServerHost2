@@ -20,7 +20,7 @@ class Message(models.Model):
     image=models.TextField(max_length=3000,null=True,blank=True,default=None)
     user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='message_user')
     chat_room=models.ForeignKey(ChatRoom,on_delete=models.CASCADE,related_name='chat_room_for_message')
-    #method=models.ForeignKey(Method,on_delete=models.CASCADE,null=True,related_name='message_method')
+    method=models.ForeignKey(Method,on_delete=models.CASCADE,null=True,related_name='message_method')
     time=models.DateTimeField(auto_now_add=True,null=True)
 
     def __str__(self):
