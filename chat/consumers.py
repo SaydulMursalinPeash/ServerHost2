@@ -238,7 +238,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             msg_img=msg_img1
             #msg_img2=base.b64decode(msg_img)
             #image_file=ContentFile(msg_img2)
-            print(message)
+            #print(message)
         except (json.JSONDecodeError, KeyError):
             print('error')
             return
