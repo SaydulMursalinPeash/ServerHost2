@@ -10,7 +10,7 @@ class ChatRoom(models.Model):
     method=models.ForeignKey(Method,on_delete=models.CASCADE,related_name='chat_room_method')
     #stuff=models.ForeignKey(User,null=True,on_delete=models.CASCADE,related_name='stuff_name')
     def __str__(self):
-        return self.user.name
+        return self.name
 
 
 
