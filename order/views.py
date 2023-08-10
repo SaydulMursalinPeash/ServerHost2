@@ -112,8 +112,7 @@ class BuyOrder(APIView):
             return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
         
         token_user=token_obj.user
-        if token_user.id is not request.data.get('customer') and not token_user.is_admin:
-            return Response({'error':'You are not Allowed to do this action.'},status=status.HTTP_400_BAD_REQUEST)
+        
         
         serializer = BuyOrderSerializer(data=request.data)
         if serializer.is_valid():
