@@ -36,7 +36,7 @@ class BuyOrderSerializer(serializers.ModelSerializer):
             order=Order.objects.create(
                 customer=self.context.get('user'),
                 account_details=ad,
-                coin=attrs.get('coin'),
+                coin=Method.objects.get(id=attrs.get('coin')),
                 amount=am,
                 purpose=pu,
                 order_email=oe,
@@ -62,7 +62,7 @@ class SellOrderSerializer(serializers.ModelSerializer):
             order=Order.objects.create(
                 customer=self.context.get('user'),
                 account_details=ad,
-                coin=attrs.get('coin'),
+                coin=Method.objects.get(id=attrs.get('coin')),
                 amount=am,
                 purpose=None,
                 trc20_address=trc,
