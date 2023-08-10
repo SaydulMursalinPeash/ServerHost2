@@ -114,7 +114,7 @@ class BuyOrder(APIView):
         token_user=token_obj.user
         
         
-        serializer = BuyOrderSerializer(data=request.data)
+        serializer = BuyOrderSerializer(data=request.data,context={'user':token_user})
         if serializer.is_valid():
             #serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -139,7 +139,8 @@ class SellOrder(APIView):
         token_user=token_obj.user
         
         
-        serializer = SellOrderSerializer(data=request.data)
+        
+        serializer = SellOrderSerializer(data=request.data,context={'user':token_user})
         if serializer.is_valid():
             #serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
