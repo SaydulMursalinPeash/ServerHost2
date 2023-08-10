@@ -9,7 +9,7 @@ class Order(models.Model):
     coin=models.ForeignKey(Method,null=True,on_delete=models.CASCADE,related_name='order_method')
     amount=models.FloatField(null=True,blank=True)
     order_email=models.EmailField(null=True,blank=True)
-    purpose=models.CharField(max_length=200,default='pay')
+    purpose=models.CharField(max_length=200,default='pay',null=True,blank=True)
     trc20_address=models.CharField(max_length=300,null=True,blank=True,default=None)
     bep20_address=models.CharField(max_length=300,null=True,blank=True,default=None)
     method=models.CharField(max_length=200,null=True,blank=True)
