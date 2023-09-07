@@ -16,8 +16,8 @@ class ChatRoom(models.Model):
 
 class Message(models.Model):
     message=models.TextField(max_length=3000,null=True)
-    #image=models.ImageField(default=None,null=True,upload_to='message/image/')
-    image=models.TextField(max_length=3000,null=True,blank=True,default=None)
+    image=models.ImageField(default=None,null=True,upload_to='message/image/')
+    #image=models.TextField(max_length=3000,null=True,blank=True,default=None)
     user=models.ForeignKey(User,on_delete=models.CASCADE,related_name='message_user')
     chat_room=models.ForeignKey(ChatRoom,on_delete=models.CASCADE,related_name='chat_room_for_message')
     method=models.ForeignKey(Method,on_delete=models.CASCADE,null=True,related_name='message_method')

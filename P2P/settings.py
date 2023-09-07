@@ -259,7 +259,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 import dj_database_url as djurl
 DATABASES={
-    'default':djurl.parse('postgres://p2pdata_user:T2jg9byCsfzT6VKKVcVYRRAlqckk4nWk@dpg-cibjtp59aq03rjg76lr0-a.oregon-postgres.render.com/p2pdata')
+    'default':djurl.parse('postgres://peash:xwMlohes1ZJvJwoCT1PHcxUQRMzKzQZr@dpg-cjsu542bgj9c73cf4eqg-a.singapore-postgres.render.com/ppp_th8n')
 }
 
 
