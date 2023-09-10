@@ -70,7 +70,8 @@ class LatestUserOrder(APIView):
         com=Order.objects.filter(customer=user,coin=method,state=True).count()
         icom=orders.count()-com
         ser=AllOrdersSerializers(orders,many=True)
-        return Response({'msg':ser.data,'num_comp':com,'num_incomp':icom},status=status.HTTP_404_NOT_FOUND)
+        user_ser=UserSerializer(user)
+        return Response({'user':user_ser.data,'data':ser.data,'num_comp':com,'num_incomp':icom},status=status.HTTP_200_OK)
 
 
 class EditOrderView(APIView):
