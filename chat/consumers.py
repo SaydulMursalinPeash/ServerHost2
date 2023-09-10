@@ -13,6 +13,7 @@ from payment.models import *
 from django.core.exceptions import ObjectDoesNotExist
 import base64 as base
 from django.core.files.base import ContentFile
+import binascii
 
 class ChatConsumer(AsyncWebsocketConsumer):
     def save_message_sync(user, message, chat_room):
@@ -235,9 +236,14 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             text_data_json = json.loads(text_data)
             message = text_data_json['message']
             msg_img1 = text_data_json['image']
-            msg_img=msg_img1
-            msg_img2=base.b64decode(msg_img)
-            image_file=ContentFile(msg_img2)
+            image_file=None
+            try:
+                msg_img=msg_img1
+                msg_img2=base.b64decode(msg_img)
+                image_file=ContentFile(msg_img2)
+            except binascii.Error as e:
+                print("***************Not Image. Jut Text.")
+
             #print(message)
         except (json.JSONDecodeError, KeyError):
             print('error')
