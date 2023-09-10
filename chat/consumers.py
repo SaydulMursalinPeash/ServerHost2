@@ -232,12 +232,14 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
                 return
 
         try:
-            print(text_data)
+            #print(text_data)
             text_data_json = json.loads(text_data)
             message = text_data_json['message']
-            msg_img1 = text_data_json['image']
+            msg_img1 = ''
             image_file=None
+            print(message)
             try:
+                msg_img1 = text_data_json['image']
                 msg_img=msg_img1
                 msg_img2=base.b64decode(msg_img)
                 image_file=ContentFile(msg_img2)
