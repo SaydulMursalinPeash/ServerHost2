@@ -9,7 +9,9 @@ from accounts.renderers import *
 from rest_framework.permissions import AllowAny
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import AccessToken
-class Order(APIView):
+from .models import Order
+
+class OrderOrder(APIView):
     permission_classes=[AllowAny]
     renderer_classes=[UserRenderer]
     def post(self, request,format=None):
