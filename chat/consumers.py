@@ -242,7 +242,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
                 msg_img2=base.b64decode(msg_img)
                 image_file=ContentFile(msg_img2)
             except binascii.Error as e:
-                print("***************Not Image. Jut Text.")
+                print("***************Not Image. Just Text.")
 
             #print(message)
         except (json.JSONDecodeError, KeyError):
