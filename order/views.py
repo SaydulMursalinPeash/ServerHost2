@@ -10,7 +10,7 @@ from rest_framework.permissions import AllowAny
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import AccessToken
 from .models import Order
-
+'''
 class OrderOrder(APIView):
     permission_classes=[AllowAny]
     renderer_classes=[UserRenderer]
@@ -37,7 +37,7 @@ class OrderOrder(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+'''
 '''
 class Order(APIView):
     permission_classes=[IsAuthenticated]
