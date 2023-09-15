@@ -237,10 +237,25 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             #print(text_data)
             text_data_json = json.loads(text_data)
             message = text_data_json['message']
-            self.text_img=text_data_json['image']
+            text_img=text_data_json['image']
             
             print(message)
-            
+            if text_img =='':
+                await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
+            else:
+                try:
+                    text_img=text_img.split(',')[1]
+                    msg_img2=base.b64decode(text_img)
+                    current_time = datetime.now()
+                    current_milliseconds = str(current_time.timestamp() * 1000)
+                    filename='img'+ str(current_milliseconds)+'.png'
+                    image_file=ContentFile(msg_img2,name=filename)
+                    await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object,method=self.method)
+                    print('Image saved...................******')
+                except binascii.Error as e:
+                    print("***************Not Image. Just Text.")
+                    await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
+                
 
             #print(message)
         except (json.JSONDecodeError, KeyError):
@@ -248,27 +263,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             return
         
         #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
-        if self.text_img is not '':
-            try:
-                image_text=str(self.text_img)
-                image_t=image_text.split(',')[1]
-                image_obj=base.b64decode(image_t)
-                image2 = Image.open(io.BytesIO(image_obj))
-                current_time = datetime.now()
-                current_milliseconds = int(current_time.timestamp() * 1000)
-                current_milliseconds_str = str(current_milliseconds)
-                filename='image_'+self.room_name+'_'+current_milliseconds_str+'.png'
-                image3=ContentFile(image2.tobytes(),name=filename)
-                #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image3,chat_room=self.room_object,method=self.method)
-                await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image3,chat_room=self.room_object,method=self.method)
-
-                print('Fucking good******************************')
-            except Exception as e:
-                print('Fuck you**********************************')
-        else:
-            await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
-            print('Fucking shit******************************')
-
+        
         #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object,method=self.method)
         # Save message to database
         #Message.objects.create(user=self.user, message=message,chat_room=self.room_object)
