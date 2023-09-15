@@ -244,8 +244,8 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
                 await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
             else:
                 try:
-                    text_img=text_img.split(',')[1]
-                    msg_img2=base.b64decode(text_img)
+                    text_img4=text_img.split(',')[1]
+                    msg_img2=base.b64decode(text_img4)
                     current_time = datetime.datetime.now()
                     current_milliseconds = str(current_time.timestamp() * 1000)
                     filename='img'+ str(current_milliseconds)+'.png'
