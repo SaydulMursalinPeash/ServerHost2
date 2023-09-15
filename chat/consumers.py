@@ -246,7 +246,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
                 try:
                     text_img=text_img.split(',')[1]
                     msg_img2=base.b64decode(text_img)
-                    current_time = datetime.now()
+                    current_time = datetime.datetime.now()
                     current_milliseconds = str(current_time.timestamp() * 1000)
                     filename='img'+ str(current_milliseconds)+'.png'
                     image_file=ContentFile(msg_img2,name=filename)
