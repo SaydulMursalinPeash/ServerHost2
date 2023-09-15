@@ -10,6 +10,7 @@ from rest_framework.permissions import AllowAny
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import AccessToken
 from .models import Order
+from django.views.decorators.csrf import csrf_exempt
 '''
 class OrderOrder(APIView):
     permission_classes=[AllowAny]
@@ -150,7 +151,7 @@ class SellOrder(APIView):
             print('-----------------Ok-----------------------')
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+@csrf_exempt
 class OrderStateChange(APIView):
     permission_classes=[AllowAny]
     def put(self,request,id):
