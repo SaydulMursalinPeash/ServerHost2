@@ -235,22 +235,24 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             #print(text_data)
             text_data_json = json.loads(text_data)
             message = text_data_json['message']
-            msg_img1 = ''
-            image_file=None
+            
+            
             print(message)
             try:
                 msg_img1 = text_data_json['image']
                 msg_img=msg_img1
                 msg_img2=base.b64decode(msg_img)
                 image_file=ContentFile(msg_img2)
+                await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object,method=self.method)
             except binascii.Error as e:
                 print("***************Not Image. Just Text.")
+                await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
 
             #print(message)
         except (json.JSONDecodeError, KeyError):
             print('error')
             return
-        await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object,method=self.method)
+        #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object,method=self.method)
         # Save message to database
         #Message.objects.create(user=self.user, message=message,chat_room=self.room_object)
 
