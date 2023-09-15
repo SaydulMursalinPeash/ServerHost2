@@ -7,5 +7,5 @@ urlpatterns = [
     path('edit-order/<order_id>/',EditOrderView.as_view(),name='edit_order'),
     path('get-all-order/',GetAllOrdersView.as_view(),name='get_all_order'),
     path('create-order/sell/',SellOrder.as_view(),name='create_order_sell'),
-    path('change-state/<int:id>/',OrderStateChange,name='order-state-change')
+    path('change-state/<int:id>/',OrderStateChange.as_view(),name='order-state-change')
 ]

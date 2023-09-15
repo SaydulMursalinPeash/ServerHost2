@@ -151,28 +151,17 @@ class SellOrder(APIView):
             print('-----------------Ok-----------------------')
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-@csrf_exempt
+
 class OrderStateChange(APIView):
-    permission_classes=[AllowAny]
+    permission_classes=[IsAuthenticated]
     def put(self,request,id):
-        access_token = request.GET.get('access_token')
-        token_user=None
-        if access_token is None:
-            return Response({'error':'Access token is required.'},status=status.HTTP_400_BAD_REQUEST)
-        token_obj=None
-        try:
-            token_obj=AccessToken.objects.get(token=access_token)
-        except ObjectDoesNotExist as e:
-            return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
-        if token_obj is None:
-            return Response({'error':'Access token is not valid.'},status=status.HTTP_400_BAD_REQUEST)
-        
-        token_user=token_obj.user
+        if not request.user.is_admin:
+            return Response({'error':'You are not permitted to do this action.'},status=status.HTTP_400_BAD_REQUEST)
        
         try:
             order_obj=Order.objects.get(id=id)
         except ObjectDoesNotExist as e:
-            return Response({'msg':'Invalid order Id.'},status=status.HTTP_200_OK)
+            return Response({'error':'Invalid order Id.'},status=status.HTTP_400_BAD_REQUEST)
         order_obj.state=True
         order_obj.save()
         return Response({'msg':'Order state changet to Completed successfully.'},status=status.HTTP_200_OK)
