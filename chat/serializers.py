@@ -19,3 +19,10 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model=Message
         fields=['message','image','user','chat_room','time']
+    def to_representation(self, instance):
+            server_address='https://p2p-server-l9qu.onrender.com/'
+            data = super().to_representation(instance)
+            if data.get('image'):
+                image_url = f"{server_address}{data['image']}"
+                data['image'] = f'<img src="{image_url}" alt="Image">'
+            return data
