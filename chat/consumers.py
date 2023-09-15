@@ -14,6 +14,8 @@ from django.core.exceptions import ObjectDoesNotExist
 import base64 as base
 from django.core.files.base import ContentFile
 import binascii
+from PIL import Image
+import io
 
 class ChatConsumer(AsyncWebsocketConsumer):
     def save_message_sync(user, message, chat_room):
@@ -235,24 +237,27 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             #print(text_data)
             text_data_json = json.loads(text_data)
             message = text_data_json['message']
-            
+            self.text_img=text_data_json['image']
             
             print(message)
-            try:
-                msg_img1 = text_data_json['image']
-                msg_img=msg_img1
-                msg_img2=base.b64decode(msg_img)
-                image_file=ContentFile(msg_img2)
-                await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object,method=self.method)
-                print('Image saved...................******')
-            except binascii.Error as e:
-                print("***************Not Image. Just Text.")
-                await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
+            
 
             #print(message)
         except (json.JSONDecodeError, KeyError):
             print('error')
             return
+        
+        try:
+            image_obj=base.b64decode(self.text_img)
+            image2 = Image.open(io.BytesIO(image_obj))
+            current_time = datetime.now()
+            current_milliseconds = int(current_time.timestamp() * 1000)
+            current_milliseconds_str = str(current_milliseconds)
+            image3=ContentFile(image2.tobytes(),name='image_'+self.room_name+'_'+current_milliseconds_str+'.png')
+            await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image3,chat_room=self.room_object,method=self.method)
+        
+        except Exception as e:
+            await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
         #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object,method=self.method)
         # Save message to database
         #Message.objects.create(user=self.user, message=message,chat_room=self.room_object)
@@ -264,7 +269,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
                 'type':'chat_message',
                 'chat_room':{'name':self.room_name},
                 'message': message,
-                'image':msg_img,
+                'image':self.text_img,
                 'time':str(datetime.datetime.now()),
                 'user':{
                     'id':self.user.id,
@@ -278,3 +283,20 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps(message))
+
+
+
+
+'''
+
+try:
+                msg_img1 = text_data_json['image']
+                msg_img=msg_img1
+                msg_img2=base.b64decode(msg_img)
+                image_file=ContentFile(msg_img2)
+                await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object,method=self.method)
+                print('Image saved...................******')
+            except binascii.Error as e:
+                print("***************Not Image. Just Text.")
+                await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
+'''
