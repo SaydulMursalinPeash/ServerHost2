@@ -249,16 +249,20 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
         
         #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
         if self.text_img is not '':
-            image_obj=base.b64decode(self.text_img)
-            image2 = Image.open(io.BytesIO(image_obj))
-            current_time = datetime.now()
-            current_milliseconds = int(current_time.timestamp() * 1000)
-            current_milliseconds_str = str(current_milliseconds)
-            filename='image_'+self.room_name+'_'+current_milliseconds_str+'.png'
-            image3=ContentFile(image2.tobytes(),name=filename)
-            #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image3,chat_room=self.room_object,method=self.method)
-            await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image3,chat_room=self.room_object,method=self.method)
-            print('Fucking good******************************')
+            try:
+                image_obj=base.b64decode(self.text_img)
+                image2 = Image.open(io.BytesIO(image_obj))
+                current_time = datetime.now()
+                current_milliseconds = int(current_time.timestamp() * 1000)
+                current_milliseconds_str = str(current_milliseconds)
+                filename='image_'+self.room_name+'_'+current_milliseconds_str+'.png'
+                image3=ContentFile(image2.tobytes(),name=filename)
+                #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image3,chat_room=self.room_object,method=self.method)
+                await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image3,chat_room=self.room_object,method=self.method)
+
+                print('Fucking good******************************')
+            except Exception as e:
+                print('Fuck you**********************************')
         else:
             await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
             print('Fucking shit******************************')
