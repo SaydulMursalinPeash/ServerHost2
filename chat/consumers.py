@@ -247,9 +247,8 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             print('error')
             return
         
-        msg_obj=await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
-        
-        try:
+        #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
+        if self.text_img is not '':
             image_obj=base.b64decode(self.text_img)
             image2 = Image.open(io.BytesIO(image_obj))
             current_time = datetime.now()
@@ -258,12 +257,12 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             filename='image_'+self.room_name+'_'+current_milliseconds_str+'.png'
             image3=ContentFile(image2.tobytes(),name=filename)
             #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image3,chat_room=self.room_object,method=self.method)
-            msg_obj.image.save(filename,image3,save=True)
+            await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image3,chat_room=self.room_object,method=self.method)
             print('Fucking good******************************')
-        
-        except Exception as e:
+        else:
+            await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
             print('Fucking shit******************************')
-            
+
         #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object,method=self.method)
         # Save message to database
         #Message.objects.create(user=self.user, message=message,chat_room=self.room_object)
