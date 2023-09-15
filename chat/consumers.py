@@ -250,7 +250,9 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
         #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
         if self.text_img is not '':
             try:
-                image_obj=base.b64decode(self.text_img)
+                image_text=str(self.text_img)
+                image_t=image_text.split(',')[1]
+                image_obj=base.b64decode(image_t)
                 image2 = Image.open(io.BytesIO(image_obj))
                 current_time = datetime.now()
                 current_milliseconds = int(current_time.timestamp() * 1000)
