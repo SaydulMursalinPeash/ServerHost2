@@ -227,7 +227,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
         # Check if user is authenticated and has permission to send messages
         '''if not self.user.is_authenticated or (not self.user.is_staff and self.user.username != "designated_user"):
             await self.close()'''
-        
+        text_img=''
         if not self.user.is_staff and (self.room_user.name!=self.user.name):
             await self.close()
             if not text_data:
@@ -275,7 +275,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
                 'type':'chat_message',
                 'chat_room':{'name':self.room_name},
                 'message': message,
-                'image':self.text_img,
+                'image':text_img,
                 'time':str(datetime.datetime.now()),
                 'user':{
                     'id':self.user.id,
