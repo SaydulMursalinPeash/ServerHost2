@@ -24,5 +24,5 @@ class MessageSerializer(serializers.ModelSerializer):
             data = super().to_representation(instance)
             if data.get('image'):
                 image_url = f"{server_address}{data['image']}"
-                data['image'] = f'<img src="{image_url}" alt="Image">'
+                data['image'] = image_url
             return data
