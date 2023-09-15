@@ -244,6 +244,7 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
                 msg_img2=base.b64decode(msg_img)
                 image_file=ContentFile(msg_img2)
                 await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object,method=self.method)
+                print('Image saved...................******')
             except binascii.Error as e:
                 print("***************Not Image. Just Text.")
                 await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
