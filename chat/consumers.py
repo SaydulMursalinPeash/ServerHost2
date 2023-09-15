@@ -247,19 +247,23 @@ class ChatMethodConsumer(AsyncWebsocketConsumer):
             print('error')
             return
         
+        msg_obj=await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
+        
         try:
             image_obj=base.b64decode(self.text_img)
             image2 = Image.open(io.BytesIO(image_obj))
             current_time = datetime.now()
             current_milliseconds = int(current_time.timestamp() * 1000)
             current_milliseconds_str = str(current_milliseconds)
-            image3=ContentFile(image2.tobytes(),name='image_'+self.room_name+'_'+current_milliseconds_str+'.png')
-            await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image3,chat_room=self.room_object,method=self.method)
+            filename='image_'+self.room_name+'_'+current_milliseconds_str+'.png'
+            image3=ContentFile(image2.tobytes(),name=filename)
+            #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image3,chat_room=self.room_object,method=self.method)
+            msg_obj.image.save(filename,image3,save=True)
             print('Fucking good******************************')
         
         except Exception as e:
             print('Fucking shit******************************')
-            await sync_to_async(Message.objects.create)(user=self.user, message=message,image=None,chat_room=self.room_object,method=self.method)
+            
         #await sync_to_async(Message.objects.create)(user=self.user, message=message,image=image_file,chat_room=self.room_object,method=self.method)
         # Save message to database
         #Message.objects.create(user=self.user, message=message,chat_room=self.room_object)
