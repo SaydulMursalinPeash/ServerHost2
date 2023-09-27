@@ -76,4 +76,4 @@ class SellOrderSerializer(serializers.ModelSerializer):
 class AllOrdersSerializers(serializers.ModelSerializer):
     class Meta:
         model=Order
-        fields=['id','account_details', 'amount', 'method','state','time']
+        fields='__all__'
