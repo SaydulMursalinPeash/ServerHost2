@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from .utils import Util
 from chat.models import ChatRoom
 from .models import Order
-
+'''
 @receiver(post_save, sender=Order)
 def notify_admins(sender, instance, created, **kwargs):
     util=Util()
@@ -30,3 +30,4 @@ def notify_admins(sender, instance, created, **kwargs):
             }
         Util.send_email(data)
 
+'''

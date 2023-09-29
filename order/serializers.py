@@ -72,8 +72,16 @@ class SellOrderSerializer(serializers.ModelSerializer):
         )
         print('-----create_ok___-')
         return order 
+
+class CoinSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Method
+        fields=['id','name','icon']  
         
+           
 class AllOrdersSerializers(serializers.ModelSerializer):
+    customer=UserSerializer()
+    coin=CoinSerializer()
     class Meta:
         model=Order
-        fields='__all__'
+        fields=['customer','account_details','coin','amount','order_email','purpose','trc20_address','bep20_address','method','state','time']
