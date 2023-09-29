@@ -123,7 +123,7 @@ class BuyOrder(APIView):
             #serializer.save()
             print('-----------------Ok-----------------------')
             user_order=Order.objects.filter(customer=token_user)
-            order_ser=AllOrdersSerializers(data=user_order,many=True)
+            order_ser=AllOrdersSerializers(user_order,many=True)
             return Response(order_ser.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -152,7 +152,7 @@ class SellOrder(APIView):
             #serializer.save()
             print('-----------------Ok-----------------------')
             user_order=Order.objects.filter(customer=token_user)
-            order_ser=AllOrdersSerializers(data=user_order,many=True)
+            order_ser=AllOrdersSerializers(user_order,many=True)
             return Response(order_ser.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
