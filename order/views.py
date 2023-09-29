@@ -93,7 +93,7 @@ class GetAllOrdersView(APIView):
     def get(self,request):
         if not request.user.is_admin and not request.user.is_officer:
             return Response({'error':'You are not permitted to do this action.'},status=status.HTTP_400_BAD_REQUEST)
-        orders=Order.objects.all()
+        orders=Order.objects.filter(state=True)
         com=Order.objects.filter(state=True).count()
         icom=orders.count()-com
         serializer=OrderSerializer(orders,many=True)
@@ -122,8 +122,8 @@ class BuyOrder(APIView):
         if serializer.is_valid():
             #serializer.save()
             print('-----------------Ok-----------------------')
-            user_order=Order.objects.filter(customer=token_user)
-            order_ser=AllOrdersSerializers(user_order,many=True)
+            user_order=Order.objects.filter(customer=token_user).order_by('-time').first()
+            order_ser=AllOrdersSerializers(user_order)
             return Response(order_ser.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -151,8 +151,8 @@ class SellOrder(APIView):
         if serializer.is_valid():
             #serializer.save()
             print('-----------------Ok-----------------------')
-            user_order=Order.objects.filter(customer=token_user)
-            order_ser=AllOrdersSerializers(user_order,many=True)
+            user_order=Order.objects.filter(customer=token_user).order_by('-time').first()
+            order_ser=AllOrdersSerializers(user_order)
             return Response(order_ser.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -169,3 +169,15 @@ class OrderStateChange(APIView):
         order_obj.state=True
         order_obj.save()
         return Response({'msg':'Order state changet to Completed successfully.'},status=status.HTTP_200_OK)
+    
+class GetAllIncompletedOrdersView(APIView):
+    permission_classes=[IsAuthenticated]
+    renderer_classes=[UserRenderer]
+    def get(self,request):
+        if not request.user.is_admin and not request.user.is_officer:
+            return Response({'error':'You are not permitted to do this action.'},status=status.HTTP_400_BAD_REQUEST)
+        orders=Order.objects.filter(state=False)
+        com=Order.objects.filter(state=True).count()
+        icom=orders.count()-com
+        serializer=OrderSerializer(orders,many=True)
+        return Response({'msg':serializer.data,'num_comp':com,'num_incomp':icom},status=status.HTTP_200_OK)
