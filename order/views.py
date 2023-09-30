@@ -68,9 +68,10 @@ class LatestUserOrder(APIView):
         if not user==request.user and not request.user.is_admin and not request.user.is_officer:
             return Response({'error':'You are not permitted to do this action. Sorry!'},status=status.HTTP_400_BAD_REQUEST)
         orders=Order.objects.filter(customer=user,coin=method)
-        com=Order.objects.filter(customer=user,coin=method,state=True).count()
+        com_order=Order.objects.filter(customer=user,coin=method,state=True)
+        com=com_order.count()
         icom=orders.count()-com
-        ser=AllOrdersSerializers(orders,many=True)
+        ser=AllOrdersSerializers(com_order,many=True)
         user_ser=UserSerializer(user)
         return Response({'user':user_ser.data,'data':ser.data,'num_comp':com,'num_incomp':icom},status=status.HTTP_200_OK)
 
@@ -170,14 +171,27 @@ class OrderStateChange(APIView):
         order_obj.save()
         return Response({'msg':'Order state changet to Completed successfully.'},status=status.HTTP_200_OK)
     
-class GetAllIncompletedOrdersView(APIView):
+class LatestUserIncompletedOrder(APIView):
     permission_classes=[IsAuthenticated]
     renderer_classes=[UserRenderer]
-    def get(self,request):
-        if not request.user.is_admin and not request.user.is_officer:
-            return Response({'error':'You are not permitted to do this action.'},status=status.HTTP_400_BAD_REQUEST)
-        orders=Order.objects.filter(state=False)
-        com=Order.objects.filter(state=True).count()
-        icom=orders.count()-com
-        serializer=OrderSerializer(orders,many=True)
-        return Response({'msg':serializer.data,'num_comp':com,'num_incomp':icom},status=status.HTTP_200_OK)
+    def get(self,request,user_uid,coin_id,format=None):
+        user=None
+        try:
+            user= User.objects.get(id=user_uid)
+        except ObjectDoesNotExist as e:
+            return Response({'error':'You are not permitted to do this action. Sorry!'},status=status.HTTP_400_BAD_REQUEST)
+        method=None
+        try:
+            method=Method.objects.get(id=coin_id)
+        except ObjectDoesNotExist as e:
+            return Response({'error':'Invalid coin.'},status=status.HTTP_400_BAD_REQUEST)
+
+        if not user==request.user and not request.user.is_admin and not request.user.is_officer:
+            return Response({'error':'You are not permitted to do this action. Sorry!'},status=status.HTTP_400_BAD_REQUEST)
+        orders=Order.objects.filter(customer=user,coin=method)
+        incom_order=Order.objects.filter(customer=user,coin=method,state=False)
+        icom=incom_order.count()
+        com=orders.count()-icom
+        ser=AllOrdersSerializers(incom_order,many=True)
+        user_ser=UserSerializer(user)
+        return Response({'user':user_ser.data,'data':ser.data,'num_comp':com,'num_incomp':icom},status=status.HTTP_200_OK)
