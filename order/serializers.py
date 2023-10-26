@@ -4,6 +4,7 @@ from accounts.models import *
 from payment.models import *
 from .models import *
 from currency.models import *
+from chat.models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -42,6 +43,15 @@ class BuyOrderSerializer(serializers.ModelSerializer):
             order_email=oe,
             method=me,
         )
+        order_obj=order
+        cu_name=order_obj.customer.name
+        or_method=order_obj.coin.name
+        chat_room_name=cu_name+'_'+or_method
+        chat_room_obj=ChatRoom.objects.get(name=chat_room_name)
+        user_obj=order.customer
+        method_obj=order_obj.coin
+        message=f"++++++++++++++++++++++\nNew Order\n\nOrder ID: {order_obj.id}({order_obj.method})\nCoin: {order_obj.coin.name}\nAmount: {order_obj.amount}\nAccount Details: {order_obj.account_details}\nOrder Email: {order_obj.order_email}\n is Placed Successfully.\n++++++++++++++++++++++++++"
+        Message.objects.create(message=message,user=user_obj,chat_room=chat_room_obj,method=method_obj)
         print('-----create_ok___-')
         return order   
 
@@ -70,6 +80,15 @@ class SellOrderSerializer(serializers.ModelSerializer):
             method=me,
 
         )
+        order_obj=order
+        cu_name=order_obj.customer.name
+        or_method=order_obj.coin.name
+        chat_room_name=cu_name+'_'+or_method
+        chat_room_obj=ChatRoom.objects.get(name=chat_room_name)
+        user_obj=order.customer
+        method_obj=order_obj.coin
+        message=f"++++++++++++++++++++++\nNew Order\n\nOrder ID: {order_obj.id}({order_obj.method})\nCoin: {order_obj.coin.name}\nAmount: {order_obj.amount}\nAccount Details: {order_obj.account_details}\nOrder Email: {order_obj.order_email}\n is Placed Successfully.\n++++++++++++++++++++++++++"
+        Message.objects.create(message=message,user=user_obj,chat_room=chat_room_obj,method=method_obj)
         print('-----create_ok___-')
         return order 
 
