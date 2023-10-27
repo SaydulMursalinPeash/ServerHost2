@@ -17,7 +17,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['customer','account_details', 'coin', 'amount', 'method','state']
+        fields = ['order_id','customer','account_details', 'coin', 'amount', 'method','state']
 
 
 class BuyOrderSerializer(serializers.ModelSerializer):
@@ -87,7 +87,7 @@ class SellOrderSerializer(serializers.ModelSerializer):
         chat_room_obj=ChatRoom.objects.get(name=chat_room_name)
         user_obj=order.customer
         method_obj=order_obj.coin
-        message=f"++++++++++++++++++++++\nNew Order\n\nOrder ID: {order_obj.id}({order_obj.method})\nCoin: {order_obj.coin.name}\nAmount: {order_obj.amount}\nAccount Details: {order_obj.account_details}\nOrder Email: {order_obj.order_email}\n is Placed Successfully.\n++++++++++++++++++++++++++"
+        message=f"++++++++++++++++++++++\nNew Order\n\nOrder ID: {order_obj.order_id}({order_obj.method})\nCoin: {order_obj.coin.name}\nAmount: {order_obj.amount}\nAccount Details: {order_obj.account_details}\nOrder Email: {order_obj.order_email}\n is Placed Successfully.\n++++++++++++++++++++++++++"
         Message.objects.create(message=message,user=user_obj,chat_room=chat_room_obj,method=method_obj)
         print('-----create_ok___-')
         return order 
@@ -103,4 +103,4 @@ class AllOrdersSerializers(serializers.ModelSerializer):
     coin=CoinSerializer()
     class Meta:
         model=Order
-        fields=['customer','account_details','coin','amount','order_email','purpose','trc20_address','bep20_address','method','state','time']
+        fields=['id','order_id','customer','account_details','coin','amount','order_email','purpose','trc20_address','bep20_address','method','state','time']
