@@ -168,7 +168,7 @@ class OrderStateChange(APIView):
             order_obj=Order.objects.get(id=id)
         except ObjectDoesNotExist as e:
             return Response({'error':'Invalid order Id.'},status=status.HTTP_400_BAD_REQUEST)
-        order_obj.state=True
+        order_obj.state=request.data.get('state')
         order_obj.save()
         cu_name=order_obj.customer.name
         or_method=order_obj.coin.name
@@ -176,7 +176,7 @@ class OrderStateChange(APIView):
         chat_room_obj=ChatRoom.objects.get(name=chat_room_name)
         user_obj=request.user
         method_obj=order_obj.coin
-        message=f"----------------------\nThe Order ID: {order_obj.order_id}({order_obj.amount}[{order_obj.method}]) is closed Successfully. Thank you sir.\n--------------------------"
+        message=f"----------------------\nThe Order, ID: {order_obj.order_id} ({order_obj.amount} [{order_obj.method}] ) is closed Successfully. Thank you sir.\n--------------------------"
         Message.objects.create(message=message,user=user_obj,chat_room=chat_room_obj,method=method_obj)
         
         return Response({'msg':'Order state changet to Completed successfully.'},status=status.HTTP_200_OK)

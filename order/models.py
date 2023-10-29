@@ -30,18 +30,13 @@ class Order(models.Model):
     trc20_address=models.CharField(max_length=300,null=True,blank=True,default=None)
     bep20_address=models.CharField(max_length=300,null=True,blank=True,default=None)
     method=models.CharField(max_length=200,null=True,blank=True)
-    state=models.BooleanField(default=False)
+    state=models.CharField(max_length=10,null=True,default='processing')
     time=models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if not self.order_id:
-            pre=''
-            if self.method=='buy':
-                pre='BUY'
-            elif self.order_id=='sell':
-                pre='SEL'
-            else:
-                pre='ORD'
+            pre='ORD'
+            
             id=generate_unique_order_id(pre)
             #print('---------------------------')
             self.order_id = id
