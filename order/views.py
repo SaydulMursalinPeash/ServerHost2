@@ -69,12 +69,13 @@ class LatestUserOrder(APIView):
         if not user==request.user and not request.user.is_admin and not request.user.is_officer:
             return Response({'error':'You are not permitted to do this action. Sorry!'},status=status.HTTP_400_BAD_REQUEST)
         orders=Order.objects.filter(customer=user,coin=method)
-        com_order=Order.objects.filter(customer=user,coin=method,state=True)
+        com_order=Order.objects.filter(customer=user,coin=method,state='complete')
         com=com_order.count()
-        icom=orders.count()-com
+        can=Order.objects.filter(state='cancel').count()
+        icom=Order.objects.filter(customer=user,coin=method,state='processing').count()
         ser=AllOrdersSerializers(com_order,many=True)
         user_ser=UserSerializer(user)
-        return Response({'user':user_ser.data,'data':ser.data,'num_comp':com,'num_incomp':icom},status=status.HTTP_200_OK)
+        return Response({'user':user_ser.data,'data':ser.data,'num_comp':com,'num_incomp':icom,'num_cancel':can},status=status.HTTP_200_OK)
 
 
 class EditOrderView(APIView):
@@ -96,10 +97,11 @@ class GetAllOrdersView(APIView):
         if not request.user.is_admin and not request.user.is_officer:
             return Response({'error':'You are not permitted to do this action.'},status=status.HTTP_400_BAD_REQUEST)
         orders=Order.objects.filter(state=True)
-        com=Order.objects.filter(state=True).count()
-        icom=orders.count()-com
+        com=Order.objects.filter(state='complete').count()
+        icom=Order.objects.filter(state='processing').count()
+        can=Order.objects.filter(state='cancel').count()
         serializer=OrderSerializer(orders,many=True)
-        return Response({'msg':serializer.data,'num_comp':com,'num_incomp':icom},status=status.HTTP_200_OK)
+        return Response({'msg':serializer.data,'num_comp':com,'num_incomp':icom,'num_cancel':can},status=status.HTTP_200_OK)
 
 
 class BuyOrder(APIView):
@@ -199,9 +201,10 @@ class LatestUserIncompletedOrder(APIView):
         if not user==request.user and not request.user.is_admin and not request.user.is_officer:
             return Response({'error':'You are not permitted to do this action. Sorry!'},status=status.HTTP_400_BAD_REQUEST)
         orders=Order.objects.filter(customer=user,coin=method)
-        incom_order=Order.objects.filter(customer=user,coin=method,state=False)
+        incom_order=Order.objects.filter(customer=user,coin=method,state='processing')
         icom=incom_order.count()
-        com=orders.count()-icom
+        com=Order.objects.filter(customer=user,coin=method,state='complete').count()
+        can=Order.objects.filter(customer=user,coin=method,state='cancel').count()
         ser=AllOrdersSerializers(incom_order,many=True)
         user_ser=UserSerializer(user)
         return Response({'user':user_ser.data,'data':ser.data,'num_comp':com,'num_incomp':icom},status=status.HTTP_200_OK)
