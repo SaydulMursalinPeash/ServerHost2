@@ -9,7 +9,6 @@ django-timezone-field
 djangorestframework
 djangorestframework-simplejwt
 Pillow
-psycopg2
 PyJWT
 python-dotenv
 redis
