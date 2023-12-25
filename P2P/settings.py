@@ -199,7 +199,7 @@ EMAIL_HOST='smtp.gmail.com'
 EMAIL_PORT=587
 EMAIL_HOST_USER='saydulpeash428@gmail.com'
 
-EMAIL_HOST_PASSWORD='xmbd xkyx kvoc bfyd '
+EMAIL_HOST_PASSWORD='erfw wmvl ejen qduz'
 EMAIL_USE_TLS=True
 
 
