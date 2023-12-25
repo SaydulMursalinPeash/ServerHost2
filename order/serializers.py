@@ -5,7 +5,7 @@ from payment.models import *
 from .models import *
 from currency.models import *
 from chat.models import *
-
+from django.core.exceptions import ObjectDoesNotExist
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,9 +47,14 @@ class BuyOrderSerializer(serializers.ModelSerializer):
         cu_name=order_obj.customer.name
         or_method=order_obj.coin.name
         chat_room_name=cu_name+'_'+or_method
-        chat_room_obj=ChatRoom.objects.get(name=chat_room_name)
+        chat_room_obj=None
         user_obj=order.customer
         method_obj=order_obj.coin
+        try:
+            chat_room_obj=ChatRoom.objects.get(name=chat_room_name)
+        except ObjectDoesNotExist as e:
+            chat_room_obj=ChatRoom.objects.create(name=cu_name+'_'+method_obj.name,user=user_obj,method=method_obj)
+        
         message=f"++++++++++++++++++++++\nNew Order\n\nOrder ID: {order_obj.id}({order_obj.method})\nCoin: {order_obj.coin.name}\nAmount: {order_obj.amount}\nAccount Details: {order_obj.account_details}\nOrder Email: {order_obj.order_email}\n is Placed Successfully.\n++++++++++++++++++++++++++"
         Message.objects.create(message=message,user=user_obj,chat_room=chat_room_obj,method=method_obj)
         print('-----create_ok___-')
@@ -87,6 +92,12 @@ class SellOrderSerializer(serializers.ModelSerializer):
         chat_room_obj=ChatRoom.objects.get(name=chat_room_name)
         user_obj=order.customer
         method_obj=order_obj.coin
+        chat_room_obj=None
+        try:
+            chat_room_obj=ChatRoom.objects.get(name=chat_room_name)
+        except ObjectDoesNotExist as e:
+            chat_room_obj=ChatRoom.objects.create(name=cu_name+'_'+method_obj.name,user=user_obj,method=method_obj)
+        
         message=f"++++++++++++++++++++++\nNew Order,\n\nOrder ID: {order_obj.order_id} ({order_obj.method}) \nCoin: {order_obj.coin.name}\nAmount: {order_obj.amount}\nAccount Details: {order_obj.account_details}\nOrder Email: {order_obj.order_email}\n is Placed Successfully.\n++++++++++++++++++++++++++"
         Message.objects.create(message=message,user=user_obj,chat_room=chat_room_obj,method=method_obj)
         print('-----create_ok___-')
