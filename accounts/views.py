@@ -71,7 +71,7 @@ class UserLoginView(APIView):
                 data={
                     'subject':'Email varification.',
                     'body':'Click following link to varify given email: '+link,
-                    'to_email':user.email
+                    'to_email':email
                 }
                 Util.send_email(data)
                 return Response({'error':'Your account is Not Valid. Please check your Email to verify your account.'},status=status.HTTP_400_BAD_REQUEST)
