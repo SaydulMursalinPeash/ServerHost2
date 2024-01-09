@@ -13,6 +13,8 @@ from channels.routing import get_default_application
 from django.core.wsgi import get_wsgi_application
 from P2P.settings import CHANNEL_LAYERS
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'P2P.settings')
+
+django.setup()
 wsgi_app=get_wsgi_application()
 asgi_app=get_asgi_application()
 
